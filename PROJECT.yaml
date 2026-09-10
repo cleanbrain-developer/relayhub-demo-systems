@@ -1,0 +1,53 @@
+schema_version: 1
+
+project:
+  name: RelayHub Demo Systems
+  repository: relayhub-demo-systems
+  abbreviation: RelayHub Demo Systems
+  type: service
+  lifecycle: active-development
+
+purpose:
+  summary: >-
+    Simulated Source and Target systems for RelayHub (relayhub-java): continuously and
+    automatically generates flight-status events into RelayHub's Ingress API without any manual
+    action, and exposes two Target endpoints (one reliable, one deliberately flaky) so RelayHub's
+    retry/DLQ path has real activity to show on a future developer-facing observability dashboard.
+  problem: >-
+    RelayHub's reliability features (retry, backoff, DLQ, replay) and observability (metrics,
+    dashboards, tracing) have nothing to demonstrate without real, ongoing, unattended traffic and
+    a Target that genuinely misbehaves like a real third-party system would. A one-off shell
+    script is not sufficient — the traffic must be continuous and the random failures must come
+    from the simulated system's own internal behavior, not from RelayHub or from the script.
+
+supported_agents:
+  initial:
+    - claude-code
+  policy: agent-agnostic-core
+
+principles:
+  - repository-first-context
+  - agent-agnostic-core
+  - minimal-task-prompts
+  - evidence-before-change
+  - this-service-simulates-external-systems-only
+  - relayhub-owns-no-traffic-generation-or-failure-logic
+
+current_phase:
+  id: phase-0-bootstrap
+  status: active
+  goal: >-
+    Scaffold the simulator (continuous flight-status event generator + airport-display/
+    travelapp-vendor Target endpoints), verify it against a real running relayhub-java instance,
+    and publish the repository.
+
+context:
+  human_entrypoint: README.md
+  agent_entrypoints:
+    claude_code: CLAUDE.md
+  current_state: docs/status/current-state.md
+
+delivery:
+  implementation_present: true
+  cli_present: false
+  automation_present: false
